@@ -1,7 +1,6 @@
-package ua.com.lsd25.controller;
+package ua.com.lsd25.controller.page;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -12,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String homeController(Model model) {
-        model.addAttribute("name", "test");
+    public String homeController() {
         return "index";
     }
 

@@ -1,4 +1,4 @@
-package ua.com.lsd25.controller;
+package ua.com.lsd25.controller.ws;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -30,9 +30,9 @@ public class GreetingController {
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
     public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) throws ApplicationException, UnknownHostException {
         model.addAttribute("name", name);
-//        userService.saveUser(new User("Victor", "Zagnitko", "1234",
-//                "victor.zagnitko@gmail.com", new Role(Role.UserRole.ADMIN), InetAddress.getLocalHost().getHostAddress()));
-        User user = userService.findUserByUsername("victor.zagnitko@gmail.com");
+        userService.saveUser(new User("Victor", "Zagnitko", "1234",
+                "victor.zagnitko@gmail.com", Role.ADMIN, InetAddress.getLocalHost().getHostAddress()));
+//        User user = userService.findUserByUsername("victor.zagnitko@gmail.com");
         return "greeting";
     }
 

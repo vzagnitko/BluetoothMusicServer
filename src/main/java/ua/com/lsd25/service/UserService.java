@@ -1,6 +1,7 @@
 package ua.com.lsd25.service;
 
 import lombok.NonNull;
+import org.springframework.security.core.userdetails.UserDetails;
 import ua.com.lsd25.domain.user.User;
 
 /**
@@ -13,5 +14,9 @@ public interface UserService {
     User findUserByUsername(@NonNull String username) throws ApplicationException;
 
     long saveUser(@NonNull User user) throws ApplicationException;
+
+    UserDetails findLoggedInUsername();
+
+    void autologin(String username, String password);
 
 }

@@ -4,9 +4,17 @@ import lombok.NonNull;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.com.lsd25.domain.user.Role;
 import ua.com.lsd25.domain.user.User;
 import ua.com.lsd25.repository.RepositoryException;
 import ua.com.lsd25.repository.UserRepository;
@@ -27,6 +35,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private Md5PasswordEncoder passwordEncoder;
 
     @Override
     @Cacheable
@@ -53,14 +70,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict
     @Transactional(rollbackFor = ApplicationException.class)
     public long saveUser(@NonNull User user) throws ApplicationException {
         try {
-            userRoleRepository.saveUserRole(user.getRole());
+            @NonNull
+            Role role = user.getRole();
+            user.setPassword(passwordEncoder.encodePassword(user.getPassword(), user.getUsername()));
+            userRoleRepository.saveUserRole(role);
             return userRepository.saveUser(user);
         } catch (RepositoryException exc) {
             log.error(exc);
             throw new ApplicationException(exc, "Cannot save user: " + user);
+        }
+    }
+
+    @Override
+    public UserDetails findLoggedInUsername() {
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        if (userDetails instanceof UserDetails) {
+            log.info("User was found: " + userDetails);
+            return (UserDetails) userDetails;
+        }
+        log.info("User was not found: " + userDetails);
+        return null;
+    }
+
+    @Override
+    public void autologin(String username, String password) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        password = passwordEncoder.encodePassword(password, username);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            log.debug(String.format("Auto login %s successfully!", username));
         }
     }
 

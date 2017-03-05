@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,12 +16,10 @@ import java.io.Serializable;
 @Table(name = "user_role", schema = "public")
 @EqualsAndHashCode
 @ToString
-public class Role implements Serializable {
+public class Role implements GrantedAuthority, Serializable {
 
-    public enum UserRole {
-        ADMIN,
-        USER
-    }
+    public static Role ADMIN = new Role(UserRole.ADMIN);
+    public static Role USER = new Role(UserRole.USER);
 
     @Getter
     @Setter
@@ -39,8 +38,18 @@ public class Role implements Serializable {
 
     }
 
-    public Role(UserRole userRole) {
+    private Role(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    @Override
+    public String getAuthority() {
+        return userRole.name();
+    }
+
+    private enum UserRole {
+        ADMIN,
+        USER
     }
 
 }
