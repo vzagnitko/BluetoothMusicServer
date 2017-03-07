@@ -1,8 +1,6 @@
 package ua.com.lsd25.ws.response;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -14,12 +12,17 @@ import java.io.Serializable;
 @ToString
 public class Greeting implements Serializable {
 
-    @Getter
-    @Setter
     private String content;
 
     public Greeting(String content) {
         this.content = content;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

@@ -1,6 +1,6 @@
 package ua.com.lsd25.controller.rest.user;
 
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,11 @@ import javax.validation.Valid;
 /**
  * @author vzagnitko
  */
-@Log4j
 @RestController
 @RequestMapping(value = "/login")
 public class UserLoginRestController {
+
+    private static final Logger LOG = Logger.getLogger(UserLoginRestController.class);
 
     @Autowired
     private UserService userService;
@@ -34,7 +35,7 @@ public class UserLoginRestController {
             throw new ValidationException(bindingResult.getAllErrors());
         }
         String username = request.getUsername();
-        log.info("Login user: " + username);
+        LOG.info("Login user: " + username);
         String password = request.getPassword();
         userService.autologin(username, password);
         return ResponseEntity.ok().body(new ServerResponse(200));

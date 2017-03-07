@@ -1,7 +1,7 @@
 package ua.com.lsd25.controller.handler.validate;
 
 import com.google.common.collect.Maps;
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,15 +17,16 @@ import java.util.Map;
 /**
  * @author vzagnitko
  */
-@Log4j
 @RestController
 @ControllerAdvice
 public class ValidationHandlingController {
 
+    private static final Logger LOG = Logger.getLogger(ValidationHandlingController.class);
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ServerResponse> conflict(ValidationException exc) {
-        log.error(exc);
+    public ResponseEntity<ServerResponse> validationHandler(ValidationException exc) {
+        LOG.error(exc);
         int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
         List<FieldError> fieldErrors = (List<FieldError>) exc.getObjectErrors();
         Map<String, String> errorValidationFields = Maps.newHashMap();

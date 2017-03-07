@@ -1,6 +1,6 @@
 package ua.com.lsd25.repository.impl;
 
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ua.com.lsd25.domain.user.User;
@@ -11,9 +11,10 @@ import ua.com.lsd25.repository.query.UserQuery;
 /**
  * @author vzagnitko
  */
-@Log4j
 @Repository
 public class UserRepositoryImpl implements UserRepository {
+
+    private static final Logger LOG = Logger.getLogger(UserRepositoryImpl.class);
 
     @Autowired
     private UserQuery userQuery;

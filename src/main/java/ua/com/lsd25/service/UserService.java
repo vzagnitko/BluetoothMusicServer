@@ -17,6 +17,6 @@ public interface UserService {
 
     UserDetails findLoggedInUsername();
 
-    void autologin(String username, String password);
+    void autologin(@NonNull String username, @NonNull String password);
 
 }

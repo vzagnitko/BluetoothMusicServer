@@ -3,8 +3,6 @@ package ua.com.lsd25.controller.rest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -18,28 +16,18 @@ import java.util.Map;
 @ToString
 public class ServerResponse<T> implements Serializable {
 
-    @Getter
-    @Setter
     @JsonProperty("entity")
     private T entity;
 
-    @Getter
-    @Setter
     @JsonProperty("error_field_map")
     private Map<String, String> errorValidationFields;
 
-    @Getter
-    @Setter
     @JsonProperty("message")
     private String message;
 
-    @Getter
-    @Setter
     @JsonProperty("status")
     private int status;
 
-    @Getter
-    @Setter
     @JsonProperty("ts")
     private long ts;
 
@@ -61,6 +49,46 @@ public class ServerResponse<T> implements Serializable {
     public ServerResponse(String message, int status) {
         this(status);
         this.message = message;
+    }
+
+    public T getEntity() {
+        return entity;
+    }
+
+    public void setEntity(T entity) {
+        this.entity = entity;
+    }
+
+    public Map<String, String> getErrorValidationFields() {
+        return errorValidationFields;
+    }
+
+    public void setErrorValidationFields(Map<String, String> errorValidationFields) {
+        this.errorValidationFields = errorValidationFields;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public long getTs() {
+        return ts;
+    }
+
+    public void setTs(long ts) {
+        this.ts = ts;
     }
 
 }

@@ -2,8 +2,6 @@ package ua.com.lsd25.domain.user;
 
 import com.google.common.collect.Sets;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -28,78 +26,58 @@ import java.util.Collection;
 @ToString
 public class User implements UserDetails, Serializable {
 
-    @Getter
-    @Setter
     @Id
     @Column(name = "u_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Getter
-    @Setter
     @NotNull
     @NotEmpty
     @Size(min = 2, max = 50)
     @Column(name = "u_first_name", nullable = false)
     private String firstName;
 
-    @Getter
-    @Setter
     @NotNull
     @NotEmpty
     @Size(min = 2, max = 50)
     @Column(name = "u_last_name", length = 50, nullable = false)
     private String lastName;
 
-    @Getter
-    @Setter
     @NotNull
     @NotEmpty
     @Column(name = "u_password", length = 100, nullable = false)
     private String password;
 
-    @Getter
-    @Setter
     @Email
     @Size(max = 50)
     @Column(name = "u_username", unique = true, length = 50, nullable = false)
     private String username;
 
-    @Getter
-    @Setter
     @NotNull
     @Column(name = "u_register_date")
     private Timestamp registerDate;
 
-    @Getter
-    @Setter
     @NotNull
     @NotEmpty
     @Column(name = "u_register_ip")
     private String registerIp;
 
-    @Getter
-    @Setter
     @JoinColumn(name = "u_user_role")
     @OneToOne(cascade = CascadeType.REMOVE)
     private Role role;
 
-    @Setter
     @NotNull
     @Column(name = "u_is_enabled")
     private boolean isEnabled;
 
-    @Setter
     @NotNull
     @Column(name = "u_is_account_non_expired")
     private boolean isAccountNonExpired = true;
 
-    @Setter
     @NotNull
     @Column(name = "u_is_account_non_blocked")
     private boolean isAccountNonBlocked = true;
 
-    @Setter
     @NotNull
     @Column(name = "u_is_credentials_non_expired")
     private boolean isCredentialsNonExpired = true;
@@ -128,6 +106,10 @@ public class User implements UserDetails, Serializable {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -136,6 +118,10 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isAccountNonExpired() {
         return isAccountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
     }
 
     @Override
@@ -148,9 +134,68 @@ public class User implements UserDetails, Serializable {
         return isCredentialsNonExpired;
     }
 
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
     @Override
     public boolean isEnabled() {
         return isEnabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Timestamp getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Timestamp registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public String getRegisterIp() {
+        return registerIp;
+    }
+
+    public void setRegisterIp(String registerIp) {
+        this.registerIp = registerIp;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setAccountNonBlocked(boolean accountNonBlocked) {
+        isAccountNonBlocked = accountNonBlocked;
+    }
 }

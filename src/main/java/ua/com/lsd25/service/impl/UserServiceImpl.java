@@ -1,7 +1,7 @@
 package ua.com.lsd25.service.impl;
 
 import lombok.NonNull;
-import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,10 +25,11 @@ import ua.com.lsd25.service.UserService;
 /**
  * @author vzagnitko
  */
-@Log4j
 @Service
 @CacheConfig(cacheNames = "users")
 public class UserServiceImpl implements UserService {
+
+    private static final Logger LOG = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findUserById(id);
         } catch (RepositoryException exc) {
-            log.error(exc);
+            LOG.error(exc);
             throw new ApplicationException(exc, "Cannot retrieve user by id: " + id);
         }
     }
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findUserByUsername(username);
         } catch (RepositoryException exc) {
-            log.error(exc);
+            LOG.error(exc);
             throw new ApplicationException(exc, "Cannot retrieve user by username: " + username);
         }
     }
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
             userRoleRepository.saveUserRole(role);
             return userRepository.saveUser(user);
         } catch (RepositoryException exc) {
-            log.error(exc);
+            LOG.error(exc);
             throw new ApplicationException(exc, "Cannot save user: " + user);
         }
     }
@@ -89,15 +90,15 @@ public class UserServiceImpl implements UserService {
     public UserDetails findLoggedInUsername() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
         if (userDetails instanceof UserDetails) {
-            log.info("User was found: " + userDetails);
+            LOG.info("User was found: " + userDetails);
             return (UserDetails) userDetails;
         }
-        log.info("User was not found: " + userDetails);
+        LOG.info("User was not found: " + userDetails);
         return null;
     }
 
     @Override
-    public void autologin(String username, String password) {
+    public void autologin(@NonNull String username, @NonNull String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         password = passwordEncoder.encodePassword(password, username);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService {
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            log.debug(String.format("Auto login %s successfully!", username));
+            LOG.debug(String.format("Auto login %s successfully!", username));
         }
     }
 

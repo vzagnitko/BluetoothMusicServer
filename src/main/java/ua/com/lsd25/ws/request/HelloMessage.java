@@ -1,8 +1,6 @@
 package ua.com.lsd25.ws.request;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -14,8 +12,6 @@ import java.io.Serializable;
 @ToString
 public class HelloMessage implements Serializable {
 
-    @Getter
-    @Setter
     private String name;
 
     public HelloMessage() {
@@ -25,4 +21,11 @@ public class HelloMessage implements Serializable {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
