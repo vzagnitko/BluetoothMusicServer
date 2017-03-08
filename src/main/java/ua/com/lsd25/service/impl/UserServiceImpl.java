@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +32,8 @@ import ua.com.lsd25.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = Logger.getLogger(UserServiceImpl.class);
+
+    private static final String ROLE_ANONYMOUS = "anonymousUser";
 
     @Autowired
     private UserRepository userRepository;
@@ -71,6 +75,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable
+    @Transactional(readOnly = true)
+    public boolean isExistsUser(@NonNull String username) throws ApplicationException {
+        try {
+            return userRepository.isExists(username);
+        } catch (RepositoryException exc) {
+            LOG.error(exc);
+            throw new ApplicationException(exc, "Cannot retrieve user by username: " + username);
+        }
+    }
+
+    @Override
     @CacheEvict
     @Transactional(rollbackFor = ApplicationException.class)
     public long saveUser(@NonNull User user) throws ApplicationException {
@@ -87,25 +103,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails findLoggedInUsername() {
-        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        if (userDetails instanceof UserDetails) {
-            LOG.info("User was found: " + userDetails);
-            return (UserDetails) userDetails;
+    public User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal == null || principal.equals(ROLE_ANONYMOUS)) {
+            throw new AccessDeniedException("User is not logged");
         }
-        LOG.info("User was not found: " + userDetails);
-        return null;
+        return (User) authentication.getPrincipal();
+    }
+
+    @Override
+    public boolean isLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        return !(principal == null || principal.equals(ROLE_ANONYMOUS));
     }
 
     @Override
     public void autologin(@NonNull String username, @NonNull String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         password = passwordEncoder.encodePassword(password, username);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+        Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        authenticationManager.authenticate(authentication);
+        if (authentication.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             LOG.debug(String.format("Auto login %s successfully!", username));
         }
     }

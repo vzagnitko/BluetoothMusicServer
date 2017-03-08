@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ua.com.lsd25.controller.handler.login.UserAlreadyLoggedException;
 import ua.com.lsd25.controller.handler.validate.ValidationException;
 import ua.com.lsd25.controller.rest.ServerResponse;
 import ua.com.lsd25.service.UserService;
@@ -19,7 +20,6 @@ import javax.validation.Valid;
  * @author vzagnitko
  */
 @RestController
-@RequestMapping(value = "/login")
 public class UserLoginRestController {
 
     private static final Logger LOG = Logger.getLogger(UserLoginRestController.class);
@@ -35,6 +35,10 @@ public class UserLoginRestController {
             throw new ValidationException(bindingResult.getAllErrors());
         }
         String username = request.getUsername();
+        boolean isLoggedUser = userService.isLoggedUser();
+        if (isLoggedUser) {
+            throw new UserAlreadyLoggedException("User with username: " + username + " already logged in");
+        }
         LOG.info("Login user: " + username);
         String password = request.getPassword();
         userService.autologin(username, password);

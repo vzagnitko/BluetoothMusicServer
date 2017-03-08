@@ -1,11 +1,11 @@
 package ua.com.lsd25.domain.user;
 
-import com.google.common.collect.Sets;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -98,7 +98,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Sets.newHashSet(this.role);
+        return AuthorityUtils.createAuthorityList(getRole().getAuthority());
     }
 
     @Override

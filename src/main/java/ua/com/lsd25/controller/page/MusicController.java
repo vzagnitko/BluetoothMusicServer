@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author vzagnitko
  */
 @Controller
-@RequestMapping(value = "/login")
-public class LoginController {
+@RequestMapping("/music")
+public class MusicController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loginController() {
-        return "layout/login";
+        return "layout/music";
     }
 
 }

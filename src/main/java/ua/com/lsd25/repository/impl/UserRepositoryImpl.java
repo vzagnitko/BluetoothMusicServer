@@ -1,5 +1,6 @@
 package ua.com.lsd25.repository.impl;
 
+import lombok.NonNull;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,6 +44,16 @@ public class UserRepositoryImpl implements UserRepository {
             return userQuery.save(user).getId();
         } catch (Exception exc) {
             throw new RepositoryException(exc, "Cannot save user: " + user);
+        }
+    }
+
+    @Override
+    public boolean isExists(@NonNull String username) throws RepositoryException {
+        try {
+            Long id = userQuery.isExistsUser(username);
+            return id != null && id != 0;
+        } catch (Exception exc) {
+            throw new RepositoryException(exc, "Cannot find user by username: " + username);
         }
     }
 

@@ -14,4 +14,6 @@ public interface UserRepository {
 
     long saveUser(@NonNull User user) throws RepositoryException;
 
+    boolean isExists(@NonNull String username) throws RepositoryException;
+
 }
