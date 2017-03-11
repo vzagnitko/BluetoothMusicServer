@@ -1,4 +1,4 @@
-package ua.com.lsd25.repository.query;
+package ua.com.lsd25.repository.query.user;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,10 +10,10 @@ import ua.com.lsd25.domain.user.User;
  */
 public interface UserQuery extends CrudRepository<User, Long> {
 
-    @Query("select u from User u where u.username = :username")
+    @Query("SELECT u FROM User u WHERE u.username = :username")
     User findUserByUsername(@Param(value = "username") String username);
 
-    @Query("select u.id from User u where u.username = :username")
+    @Query("SELECT u.id FROM User u WHERE u.username = :username")
     Long isExistsUser(@Param(value = "username") String username);
 
 }

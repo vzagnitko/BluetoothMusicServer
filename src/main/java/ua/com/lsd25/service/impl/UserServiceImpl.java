@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.lsd25.domain.user.Role;
 import ua.com.lsd25.domain.user.User;
 import ua.com.lsd25.repository.RepositoryException;
-import ua.com.lsd25.repository.UserRepository;
-import ua.com.lsd25.repository.UserRoleRepository;
+import ua.com.lsd25.repository.user.UserRepository;
+import ua.com.lsd25.repository.user.UserRoleRepository;
 import ua.com.lsd25.service.ApplicationException;
 import ua.com.lsd25.service.UserService;
 

@@ -1,4 +1,4 @@
-package ua.com.lsd25.repository.impl;
+package ua.com.lsd25.repository.impl.user;
 
 import lombok.NonNull;
 import org.apache.log4j.Logger;
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ua.com.lsd25.domain.user.User;
 import ua.com.lsd25.repository.RepositoryException;
-import ua.com.lsd25.repository.UserRepository;
-import ua.com.lsd25.repository.query.UserQuery;
+import ua.com.lsd25.repository.query.user.UserQuery;
+import ua.com.lsd25.repository.user.UserRepository;
 
 /**
  * @author vzagnitko

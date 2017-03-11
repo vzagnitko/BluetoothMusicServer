@@ -40,3 +40,22 @@ ALTER TABLE public."user"
 
 CREATE UNIQUE INDEX idx_user_username
   ON public.user (u_username);
+
+--changeset vzagnitko:3
+CREATE TABLE public.music
+(
+  m_id      SERIAL,
+  m_name    VARCHAR(100) NOT NULL,
+  m_music   BYTEA,
+  m_user_id SERIAL REFERENCES public.user (u_id) ON DELETE CASCADE,
+  PRIMARY KEY (m_id)
+)
+WITH (
+OIDS = FALSE
+);
+
+ALTER TABLE public."music"
+  OWNER TO postgres;
+
+CREATE UNIQUE INDEX idx_music_name
+  ON public.music (m_name);

@@ -20,6 +20,7 @@ import javax.validation.Valid;
  * @author vzagnitko
  */
 @RestController
+@RequestMapping("/rest/login")
 public class UserLoginRestController {
 
     private static final Logger LOG = Logger.getLogger(UserLoginRestController.class);
@@ -27,7 +28,7 @@ public class UserLoginRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = {"", "/", "*" }, method = RequestMethod.POST,
+    @RequestMapping(value = {"", "/", "*"}, method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ServerResponse> loginController(@Valid @RequestBody UserLoginRequest request,
                                                           BindingResult bindingResult) {

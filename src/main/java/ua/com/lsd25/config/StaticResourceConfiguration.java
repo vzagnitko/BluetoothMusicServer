@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
 
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/static/**" };
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/static/**"};
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -1,7 +1,8 @@
-package ua.com.lsd25.repository;
+package ua.com.lsd25.repository.user;
 
 import lombok.NonNull;
 import ua.com.lsd25.domain.user.User;
+import ua.com.lsd25.repository.RepositoryException;
 
 /**
  * @author vzagnitko

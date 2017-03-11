@@ -1,5 +1,37 @@
-<body th:fragment="music-body">
+<body th:fragment="music-body" onload="music()">
 
-music
+<script>
+
+
+</script>
+
+<form method="POST" action="/rest/musics/upload" enctype="multipart/form-data">
+    Song to upload: <input type="file" name="file">
+
+    <input type="submit" value="Upload"> Press here to upload the song!
+</form>
+
+<button id="play-music" type="button" class="btn btn-info" value="play">
+    Play
+</button>
+
+
+<table>
+
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Name
+        </th>
+    </tr>
+
+    <tr>
+        <td>Jill</td>
+        <td>Smith</td>
+    </tr>
+
+</table>
 
 </body>
