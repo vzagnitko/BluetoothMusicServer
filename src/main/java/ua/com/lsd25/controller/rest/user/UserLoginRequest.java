@@ -1,5 +1,6 @@
 package ua.com.lsd25.controller.rest.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
@@ -15,9 +16,11 @@ import java.io.Serializable;
 public class UserLoginRequest implements Serializable {
 
     @Email
+    @JsonProperty("username")
     private String username;
 
     @NotEmpty
+    @JsonProperty("password")
     private String password;
 
     public UserLoginRequest() {

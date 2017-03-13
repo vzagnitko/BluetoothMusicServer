@@ -1,3 +1,9 @@
+/**
+ * Created by vzagnitko on 11.03.17.
+ */
+
+var link = '/rest/logins';
+
 function loginUser() {
     var username = $("#login-username").val();
     var password = $("#login-password").val();
@@ -9,16 +15,12 @@ function loginUser() {
 
     $.ajax({
         type: "POST",
-        url: "/login",
+        url: link,
         dataType: "json",
-        contentType: "application/json",
+        contentType: "application/json;charset=UTF-8",
         success: function (msg) {
-//                if (msg) {
-//                    alert("Login user" + username + "!");
-//                    location.reload(true);
-//                } else {
-//                    alert("Cannot login user" + username + "!");
-//                }
+            console.log(msg);
+            window.location.replace("/music");
         },
         data: JSON.stringify(userData)
     });

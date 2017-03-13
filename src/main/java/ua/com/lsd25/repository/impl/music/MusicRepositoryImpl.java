@@ -40,6 +40,15 @@ public class MusicRepositoryImpl implements MusicRepository {
     }
 
     @Override
+    public Music findMusicById(long id) throws RepositoryException {
+        try {
+            return musicQuery.findOne(id);
+        } catch (Exception exc) {
+            throw new RepositoryException(exc, "Cannot find music by id: " + id);
+        }
+    }
+
+    @Override
     public long saveMusic(Music music) throws RepositoryException {
         try {
             return musicQuery.save(music).getId();

@@ -1,14 +1,10 @@
-<body th:fragment="music-body" onload="music()">
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="music-body" onload="musics()">
 
-<script>
+<form method="POST" th:action="@{/rest/musics/upload}" enctype="multipart/form-data">
+    File to upload: <input type="file" name="file">
 
-
-</script>
-
-<form method="POST" action="/rest/musics/upload" enctype="multipart/form-data">
-    Song to upload: <input type="file" name="file">
-
-    <input type="submit" value="Upload"> Press here to upload the song!
+    <input type="submit" value="Upload"> Press here to upload the file!
 </form>
 
 <button id="play-music" type="button" class="btn btn-info" value="play">
@@ -16,20 +12,12 @@
 </button>
 
 
-<table>
+<table id="music-table">
 
     <tr>
-        <th>
-            #
-        </th>
         <th>
             Name
         </th>
-    </tr>
-
-    <tr>
-        <td>Jill</td>
-        <td>Smith</td>
     </tr>
 
 </table>

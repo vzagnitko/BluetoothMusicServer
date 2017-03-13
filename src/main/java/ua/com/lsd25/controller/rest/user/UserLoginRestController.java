@@ -20,7 +20,7 @@ import javax.validation.Valid;
  * @author vzagnitko
  */
 @RestController
-@RequestMapping("/rest/login")
+@RequestMapping("/rest/logins")
 public class UserLoginRestController {
 
     private static final Logger LOG = Logger.getLogger(UserLoginRestController.class);

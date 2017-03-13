@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ua.com.lsd25.domain.user.Role;
 import ua.com.lsd25.domain.user.User;
+import ua.com.lsd25.domain.user.role.Role;
 import ua.com.lsd25.service.ApplicationException;
 import ua.com.lsd25.service.UserService;
 
@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
  * @author vzagnitko
  */
 @RestController
-@RequestMapping("/rest/test")
+@RequestMapping("/rest/tests")
 public class TestRestController {
 
     @Autowired

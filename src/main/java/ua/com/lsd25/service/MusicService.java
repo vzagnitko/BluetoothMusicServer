@@ -14,6 +14,8 @@ public interface MusicService {
 
     Music findMusicByName(@NonNull String name) throws ApplicationException;
 
+    Music findMusicById(@NonNull Long id) throws ApplicationException;
+
     long saveMusic(@NonNull String musicName, @NonNull byte[] musicBytes) throws ApplicationException;
 
 }

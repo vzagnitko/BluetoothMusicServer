@@ -3,11 +3,11 @@ package ua.com.lsd25.domain.music;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
+import ua.com.lsd25.domain.DomainBuildWrapperMarker;
 import ua.com.lsd25.domain.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * @author vzagnitko
@@ -18,7 +18,7 @@ import java.io.Serializable;
 })
 @EqualsAndHashCode
 @ToString
-public class Music implements Serializable {
+public class Music implements DomainBuildWrapperMarker<MusicWrapper> {
 
     @Id
     @Column(name = "m_id")
@@ -79,4 +79,10 @@ public class Music implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public MusicWrapper buildWrapper() {
+        return new MusicWrapper(this);
+    }
+
 }

@@ -14,6 +14,8 @@ public interface MusicRepository {
 
     Music findMusicByName(String name) throws RepositoryException;
 
+    Music findMusicById(long id) throws RepositoryException;
+
     long saveMusic(Music music) throws RepositoryException;
 
 }

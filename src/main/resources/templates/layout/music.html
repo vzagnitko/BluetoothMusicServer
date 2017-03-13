@@ -3,69 +3,70 @@
 <head>
     <title>Music page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <div th:replace="fragment/script :: scripts">
+    <script th:src="@{/js/music.js}"></script>
+    <div th:replace="fragment/resource :: scripts">
     </div>
-    <div th:replace="fragment/style :: styles">
+    <div th:replace="fragment/resource :: styles">
     </div>
 </head>
 
-<script>
+<!--<script>-->
 
-    window.onload = init;
-    var context;    // Audio context
-    var buf;        // Audio buffer
+<!--window.onload = init;-->
+<!--var context;    // Audio context-->
+<!--var buf;        // Audio buffer-->
 
-    function init() {
-        if (!window.AudioContext) {
-            if (!window.webkitAudioContext) {
-                alert("Your browser does not support any AudioContext and cannot play back this audio.");
-                return;
-            }
-            window.AudioContext = window.webkitAudioContext;
-        }
+<!--function init() {-->
+<!--if (!window.AudioContext) {-->
+<!--if (!window.webkitAudioContext) {-->
+<!--alert("Your browser does not support any AudioContext and cannot play back this audio.");-->
+<!--return;-->
+<!--}-->
+<!--window.AudioContext = window.webkitAudioContext;-->
+<!--}-->
 
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        context = new AudioContext();
-    }
+<!--window.AudioContext = window.AudioContext || window.webkitAudioContext;-->
+<!--context = new AudioContext();-->
+<!--}-->
 
-    function playByteArray(byteArray) {
+<!--function playByteArray(byteArray) {-->
 
-        var arrayBuffer = new ArrayBuffer(byteArray.length);
-        var bufferView = new Uint8Array(arrayBuffer);
-        for (i = 0; i < byteArray.length; i++) {
-            bufferView[i] = byteArray[i];
-        }
+<!--var arrayBuffer = new ArrayBuffer(byteArray.length);-->
+<!--var bufferView = new Uint8Array(arrayBuffer);-->
+<!--for (i = 0; i < byteArray.length; i++) {-->
+<!--bufferView[i] = byteArray[i];-->
+<!--}-->
 
-        context.decodeAudioData(arrayBuffer, function (buffer) {
-            buf = buffer;
-            play();
-        });
-    }
+<!--context.decodeAudioData(arrayBuffer, function (buffer) {-->
+<!--buf = buffer;-->
+<!--play();-->
+<!--});-->
+<!--}-->
 
-    // Play the loaded file
-    function play() {
-        // Create a source node from the buffer
-        var source = context.createBufferSource();
-        source.buffer = buf;
-        // Connect to the final output node (the speakers)
-        source.connect(context.destination);
-        // Play immediately
-        source.start(0);
-    }
-    function music() {
+<!--// Play the loaded file-->
+<!--function play() {-->
+<!--// Create a source node from the buffer-->
+<!--var source = context.createBufferSource();-->
+<!--source.buffer = buf;-->
+<!--// Connect to the final output node (the speakers)-->
+<!--source.connect(context.destination);-->
+<!--// Play immediately-->
+<!--source.start(0);-->
+<!--}-->
+<!--function music() {-->
 
-        $.ajax({
-            type: "GET",
-            url: "/rest/music",
-            success: function (msg) {
-                console.log(msg);
-                var musicBytes = msg.entity[0].music;
-                playByteArray(musicBytes)
-            }
-        });
-    }
+<!--$.ajax({-->
+<!--type: "GET",-->
+<!--url: "/rest/music",-->
+<!--success: function (msg) {-->
+<!--console.log(msg);-->
+<!--var musicBytes = msg.entity[0].music;-->
+<!--playByteArray(musicBytes)-->
+<!--}-->
+<!--});-->
+<!--}-->
 
-</script>
+<!--</script>-->
 
 <body th:replace="body/music :: music-body">>
 

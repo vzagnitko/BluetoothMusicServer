@@ -3,7 +3,7 @@ package ua.com.lsd25.repository.impl.user;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ua.com.lsd25.domain.user.Role;
+import ua.com.lsd25.domain.user.role.Role;
 import ua.com.lsd25.repository.RepositoryException;
 import ua.com.lsd25.repository.query.user.UserRoleQuery;
 import ua.com.lsd25.repository.user.UserRoleRepository;

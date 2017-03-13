@@ -60,6 +60,18 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
+    @Cacheable
+    @Transactional(readOnly = true)
+    public Music findMusicById(@NonNull Long id) throws ApplicationException {
+        try {
+            return musicRepository.findMusicById(id);
+        } catch (RepositoryException exc) {
+            LOG.error(exc);
+            throw new ApplicationException(exc, "Cannot retrieve music by id: " + id);
+        }
+    }
+
+    @Override
     @CacheEvict
     @Transactional
     public long saveMusic(@NonNull String musicName, @NonNull byte[] musicBytes) throws ApplicationException {

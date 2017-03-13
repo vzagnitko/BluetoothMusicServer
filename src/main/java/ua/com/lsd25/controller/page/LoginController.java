@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/login")
 public class LoginController {
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/", "*"}, method = RequestMethod.GET)
     public String loginController() {
         return "layout/login";
     }

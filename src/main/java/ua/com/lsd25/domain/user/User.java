@@ -7,11 +7,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.com.lsd25.domain.DomainBuildWrapperMarker;
+import ua.com.lsd25.domain.user.role.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -24,7 +25,7 @@ import java.util.Collection;
 })
 @EqualsAndHashCode
 @ToString
-public class User implements UserDetails, Serializable {
+public class User implements UserDetails, DomainBuildWrapperMarker<UserWrapper> {
 
     @Id
     @Column(name = "u_id")
@@ -198,4 +199,10 @@ public class User implements UserDetails, Serializable {
     public void setAccountNonBlocked(boolean accountNonBlocked) {
         isAccountNonBlocked = accountNonBlocked;
     }
+
+    @Override
+    public UserWrapper buildWrapper() {
+        return new UserWrapper(this);
+    }
+
 }

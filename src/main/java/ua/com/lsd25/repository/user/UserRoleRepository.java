@@ -1,6 +1,6 @@
 package ua.com.lsd25.repository.user;
 
-import ua.com.lsd25.domain.user.Role;
+import ua.com.lsd25.domain.user.role.Role;
 import ua.com.lsd25.repository.RepositoryException;
 
 /**

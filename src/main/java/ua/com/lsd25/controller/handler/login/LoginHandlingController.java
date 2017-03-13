@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -59,6 +60,14 @@ public class LoginHandlingController {
     public ResponseEntity<ServerResponse> userAlreadyLogged(HttpMessageNotReadableException exc) {
         LOG.error(exc);
         int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ServerResponse> userAlreadyLogged(AccessDeniedException exc) {
+        LOG.error(exc);
+        int status = HttpStatus.FORBIDDEN.value();
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
     }
 

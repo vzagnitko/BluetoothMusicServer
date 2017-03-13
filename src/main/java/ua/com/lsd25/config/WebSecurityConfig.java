@@ -24,15 +24,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/rest/login", "/login", "/rest/test").permitAll()
-                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/rest/logins", "/login", "/rest/tests").permitAll()
+                .antMatchers("/js/**", "/css/**", "/images/**").permitAll()
                 .anyRequest()
                 .authenticated()
+                .and()
+                .formLogin().loginPage("/login")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")
                 .and().csrf().disable();
     }
+
 
     @Bean
     public Md5PasswordEncoder passwordEncoder() {

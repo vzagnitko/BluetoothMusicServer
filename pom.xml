@@ -31,6 +31,7 @@
         <commons-fileupload-version>1.3.2</commons-fileupload-version>
         <commons-io-version>2.5</commons-io-version>
         <jlayer-version>1.0.1.4</jlayer-version>
+        <bluecove-version>2.1.2</bluecove-version>
     </properties>
 
     <dependencies>
@@ -145,6 +146,12 @@
             <groupId>com.googlecode.soundlibs</groupId>
             <artifactId>jlayer</artifactId>
             <version>${jlayer-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ua.com.lsd25</groupId>
+            <artifactId>bluecove</artifactId>
+            <version>${bluecove-version}</version>
         </dependency>
 
     </dependencies>

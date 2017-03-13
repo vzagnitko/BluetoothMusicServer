@@ -1,11 +1,11 @@
-package ua.com.lsd25.domain.user;
+package ua.com.lsd25.domain.user.role;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+import ua.com.lsd25.domain.DomainMarker;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * @author vzagnitko
@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Table(name = "user_role", schema = "public")
 @EqualsAndHashCode
 @ToString
-public class Role implements GrantedAuthority, Serializable {
+public class Role implements GrantedAuthority, DomainMarker {
 
     public static Role ADMIN = new Role(UserRole.ADMIN);
     public static Role USER = new Role(UserRole.USER);
