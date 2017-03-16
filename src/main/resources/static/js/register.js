@@ -9,7 +9,7 @@ function registerUser() {
     var username = $("#reg-email").val();
     var firstName = $("#reg-first-name").val();
     var lastName = $("#reg-last-name").val();
-    var password = $("#login-password").val();
+    var password = $("#reg-password").val();
 
     var userData = {
         username: username,
