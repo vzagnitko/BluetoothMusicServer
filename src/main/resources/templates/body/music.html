@@ -1,5 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<body th:fragment="music-body" onload="musics()">
+<body xmlns:th="http://www.thymeleaf.org" th:fragment="music-body" onload="musics()">
 
 <form method="POST" th:action="@{/rest/musics/upload}" enctype="multipart/form-data">
     File to upload: <input type="file" name="file">

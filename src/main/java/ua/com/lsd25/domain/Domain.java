@@ -5,5 +5,6 @@ import java.io.Serializable;
 /**
  * @author vzagnitko
  */
-public interface WrapperMarker extends Serializable {
+public interface Domain extends Serializable {
+
 }

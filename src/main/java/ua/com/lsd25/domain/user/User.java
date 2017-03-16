@@ -3,16 +3,15 @@ package ua.com.lsd25.domain.user;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import ua.com.lsd25.domain.DomainBuildWrapperMarker;
+import ua.com.lsd25.domain.DomainBuildWrapper;
 import ua.com.lsd25.domain.user.role.Role;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -25,40 +24,36 @@ import java.util.Collection;
 })
 @EqualsAndHashCode
 @ToString
-public class User implements UserDetails, DomainBuildWrapperMarker<UserWrapper> {
+public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
 
     @Id
     @Column(name = "u_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @NotEmpty
-    @Size(min = 2, max = 50)
+    @Length(min = 2, max = 50)
     @Column(name = "u_first_name", nullable = false)
     private String firstName;
 
-    @NotNull
     @NotEmpty
-    @Size(min = 2, max = 50)
+    @Length(min = 2, max = 50)
     @Column(name = "u_last_name", length = 50, nullable = false)
     private String lastName;
 
-    @NotNull
     @NotEmpty
     @Column(name = "u_password", length = 100, nullable = false)
     private String password;
 
     @Email
-    @Size(max = 50)
+    @Length(max = 50)
     @Column(name = "u_username", unique = true, length = 50, nullable = false)
     private String username;
 
-    @NotNull
+    @NotEmpty
     @Column(name = "u_register_date")
     private Timestamp registerDate;
 
-    @NotNull
     @NotEmpty
     @Column(name = "u_register_ip")
     private String registerIp;
@@ -67,19 +62,15 @@ public class User implements UserDetails, DomainBuildWrapperMarker<UserWrapper> 
     @OneToOne(cascade = CascadeType.REMOVE)
     private Role role;
 
-    @NotNull
     @Column(name = "u_is_enabled")
     private boolean isEnabled;
 
-    @NotNull
     @Column(name = "u_is_account_non_expired")
     private boolean isAccountNonExpired = true;
 
-    @NotNull
     @Column(name = "u_is_account_non_blocked")
     private boolean isAccountNonBlocked = true;
 
-    @NotNull
     @Column(name = "u_is_credentials_non_expired")
     private boolean isCredentialsNonExpired = true;
 

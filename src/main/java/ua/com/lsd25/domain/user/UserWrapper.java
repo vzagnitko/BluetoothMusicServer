@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import ua.com.lsd25.domain.WrapperMarker;
+import ua.com.lsd25.domain.Wrapper;
 import ua.com.lsd25.domain.user.role.Role;
 
 import java.sql.Timestamp;
@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode
 @ToString
-public class UserWrapper implements WrapperMarker {
+public class UserWrapper implements Wrapper {
 
     @JsonProperty("id")
     private long id;

@@ -1,19 +1,21 @@
 /**
- * Created by vzagnitko on 11.03.17.
+ * Created by vzagnitko on 16.03.17.
  */
 
-var link = '/rest/logins';
+var link = '/rest/registers';
 
-function loginUser() {
+function registerUser() {
 
-    var username = $("#login-username").val();
+    var username = $("#reg-email").val();
+    var firstName = $("#reg-first-name").val();
+    var lastName = $("#reg-last-name").val();
     var password = $("#login-password").val();
-    var isRememberMe = $("#remember-me").is(':checked');
 
     var userData = {
         username: username,
-        password: password,
-        remember_me: isRememberMe
+        first_name: firstName,
+        last_name: lastName,
+        password: password
     };
 
     $.ajax({

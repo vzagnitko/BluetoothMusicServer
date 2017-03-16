@@ -7,13 +7,9 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.lsd25.domain.user.User;
@@ -40,12 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private Md5PasswordEncoder passwordEncoder;
@@ -119,17 +109,39 @@ public class UserServiceImpl implements UserService {
         return !(principal == null || principal.equals(ROLE_ANONYMOUS));
     }
 
-    @Override
-    public void autologin(@NonNull String username, @NonNull String password) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        password = passwordEncoder.encodePassword(password, username);
-        Authentication authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        authenticationManager.authenticate(authentication);
-        if (authentication.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            LOG.debug(String.format("Auto login %s successfully!", username));
-        }
-    }
+//    @Override
+//    public void autologin(@NonNull String username, @NonNull String password, boolean isRememberMe) {
+//
+//        user.setAuthorities(buildUserAuthority(user.getUserRoles()));
+//        Authentication auth = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
+//        if (!StringUtils.isEmpty(password)) {
+//            auth = this.mAuthenticationManager.authenticate(auth);
+//        }
+//        if (auth.isAuthenticated()) {
+//            this.mTokenBasedRememberMeServices.setRememberMe(isRememberMe);
+//            this.mTokenBasedRememberMeServices.onLoginSuccess(httpServletRequest, httpServletResponse, auth);
+//            SecurityContextHolder.getContext().setAuthentication(auth);
+//            LOG.info("User success auth: " + auth.getPrincipal());
+//        } else {
+//            LOG.warn("User is not success auth: " + auth.getPrincipal());
+//        }
+//
+//
+//
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//        password = passwordEncoder.encodePassword(password, username);
+//        Authentication authentication =
+//                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+//        if(Strings.isNullOrEmpty(password)) {
+//            tokenBasedRememberMeServices.autoLogin()
+//        }
+//
+//        authenticationManager.authenticate(authentication);
+//        if (authentication.isAuthenticated()) {
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            LOG.debug(String.format("Auto login %s successfully!", username));
+//        }
+//
+//    }
 
 }

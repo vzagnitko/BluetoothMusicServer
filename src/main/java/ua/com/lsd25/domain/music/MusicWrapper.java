@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import ua.com.lsd25.domain.WrapperMarker;
+import ua.com.lsd25.domain.Wrapper;
 
 /**
  * @author vzagnitko
@@ -12,7 +12,7 @@ import ua.com.lsd25.domain.WrapperMarker;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode
 @ToString
-public class MusicWrapper implements WrapperMarker {
+public class MusicWrapper implements Wrapper {
 
     @JsonProperty("id")
     private long id;

@@ -3,7 +3,7 @@ package ua.com.lsd25.domain.music;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
-import ua.com.lsd25.domain.DomainBuildWrapperMarker;
+import ua.com.lsd25.domain.DomainBuildWrapper;
 import ua.com.lsd25.domain.user.User;
 
 import javax.persistence.*;
@@ -18,14 +18,13 @@ import javax.validation.constraints.NotNull;
 })
 @EqualsAndHashCode
 @ToString
-public class Music implements DomainBuildWrapperMarker<MusicWrapper> {
+public class Music implements DomainBuildWrapper<MusicWrapper> {
 
     @Id
     @Column(name = "m_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @NotEmpty
     @Column(name = "m_name", length = 100, nullable = false)
     private String name;

@@ -12,6 +12,7 @@ import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author vzagnitko
@@ -26,7 +27,7 @@ public class EchoServerImpl implements EchoServer {
 
     private StreamConnectionNotifier server;
     // globals
-    private ArrayList<ThreadedEchoHandler> handlers;
+    private List<ThreadedEchoHandler> handlers = new ArrayList<>();
     private volatile boolean isRunning = false;
 
     @PostConstruct
