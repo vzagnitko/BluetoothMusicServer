@@ -1,4 +1,4 @@
-package ua.com.lsd25.controller.rest.user;
+package ua.com.lsd25.controller.rest.user.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;

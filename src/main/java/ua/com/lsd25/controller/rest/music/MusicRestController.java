@@ -5,11 +5,11 @@ import javazoom.jl.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import ua.com.lsd25.controller.handler.validate.ValidationException;
 import ua.com.lsd25.controller.rest.ServerResponse;
 import ua.com.lsd25.domain.music.Music;
 import ua.com.lsd25.domain.music.MusicWrapper;
@@ -17,8 +17,6 @@ import ua.com.lsd25.helper.WrapperHelper;
 import ua.com.lsd25.service.ApplicationException;
 import ua.com.lsd25.service.MusicService;
 
-import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -41,33 +39,34 @@ public class MusicRestController {
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ResponseEntity<Void> uploadFileController(@RequestParam MultipartFile file) throws IOException, ApplicationException {
+    public ResponseEntity<ServerResponse<Void>> uploadFileController(@RequestParam MultipartFile file)
+            throws IOException, ApplicationException {
 
         if (file.isEmpty()) {
             throw new IllegalStateException("Please select file!");
         }
 
-        String name = ((CommonsMultipartFile) file).getFileItem().getName();
+        String name = file.getOriginalFilename();
         byte[] musicBytes = file.getBytes();
         musicService.saveMusic(name, musicBytes);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(new ServerResponse<>(200));
     }
 
-    @RequestMapping(value = "/play", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> playController(@Valid @RequestBody MusicRequest musicRequest,
-                                               BindingResult bindingResult) throws ApplicationException, JavaLayerException {
-        if (bindingResult.hasErrors()) {
-            throw new ValidationException(bindingResult.getAllErrors());
-        }
-        Long musicId = musicRequest.getMusicId();
-        Music music = musicService.findMusicById(musicId);
+    //@Valid @RequestBody MusicRequest musicRequest,
+    //, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+    //,BindingResult bindingResult
+    @RequestMapping(value = "/play", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<ServerResponse<Void>> playController(@RequestParam Long musicId) throws ApplicationException, JavaLayerException {
+//        if (bindingResult.hasErrors()) {
+//            throw new ValidationException(bindingResult.getAllErrors());
+//        }
 
-        InputStream is = new ByteArrayInputStream(music.getMusic());
+        InputStream is = musicService.getMusicInputStream(musicId);
         Player playMP3 = new Player(is);
         playMP3.play();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(new ServerResponse<>(200));
     }
 
 }

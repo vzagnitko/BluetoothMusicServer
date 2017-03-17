@@ -1,4 +1,4 @@
-package ua.com.lsd25.controller.rest.user;
+package ua.com.lsd25.controller.rest.user.register;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
@@ -17,12 +17,12 @@ import java.io.Serializable;
 @ToString
 public class UserRegisterRequest implements Serializable {
 
-    @NotBlank(message = "{userRegisterRequest.empty.firstname}")
+    @NotBlank(message = "{userRegisterRequest.empty.firstName}")
     @Length(min = 2, max = 50, message = "{userRegisterRequest.incorrect.firstname.length}")
     @JsonProperty("first_name")
     private String firstName;
 
-    @NotBlank(message = "{userRegisterRequest.empty.lastname}")
+    @NotBlank(message = "{userRegisterRequest.empty.lastName}")
     @Length(min = 2, max = 50, message = "{userRegisterRequest.incorrect.lastname.length}")
     @JsonProperty("last_name")
     private String lastName;

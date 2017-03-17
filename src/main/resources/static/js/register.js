@@ -2,8 +2,6 @@
  * Created by vzagnitko on 16.03.17.
  */
 
-var link = '/rest/registers';
-
 function registerUser() {
 
     var username = $("#reg-email").val();
@@ -20,12 +18,12 @@ function registerUser() {
 
     $.ajax({
         type: "POST",
-        url: link,
+        url: '/rest/registers',
         dataType: "json",
         contentType: "application/json;charset=UTF-8",
         success: function (msg) {
             console.log(msg);
-            // window.location.replace("/music");
+            window.location.replace("/login");
         },
         data: JSON.stringify(userData)
     });

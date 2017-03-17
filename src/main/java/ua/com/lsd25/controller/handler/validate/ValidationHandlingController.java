@@ -23,11 +23,11 @@ public class ValidationHandlingController {
 
     private static final Logger LOG = Logger.getLogger(ValidationHandlingController.class);
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ServerResponse> validationHandler(ValidationException exc) {
         LOG.error(exc);
-        int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        int status = HttpStatus.UNPROCESSABLE_ENTITY.value();
         List<FieldError> fieldErrors = (List<FieldError>) exc.getObjectErrors();
         Map<String, String> errorValidationFields = Maps.newHashMap();
         for (FieldError fieldError : fieldErrors) {

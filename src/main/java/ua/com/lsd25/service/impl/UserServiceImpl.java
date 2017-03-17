@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.com.lsd25.controller.handler.login.UserAlreadyLoggedException;
 import ua.com.lsd25.domain.user.User;
 import ua.com.lsd25.domain.user.role.Role;
 import ua.com.lsd25.repository.RepositoryException;
@@ -81,6 +82,9 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = ApplicationException.class)
     public long saveUser(@NonNull User user) throws ApplicationException {
         try {
+            if (isExistsUser(user.getUsername())) {
+                throw new UserAlreadyLoggedException("User with username: " + user.getUsername() + " already registered");
+            }
             @NonNull
             Role role = user.getRole();
             user.setPassword(passwordEncoder.encodePassword(user.getPassword(), user.getUsername()));
@@ -108,40 +112,5 @@ public class UserServiceImpl implements UserService {
         Object principal = authentication.getPrincipal();
         return !(principal == null || principal.equals(ROLE_ANONYMOUS));
     }
-
-//    @Override
-//    public void autologin(@NonNull String username, @NonNull String password, boolean isRememberMe) {
-//
-//        user.setAuthorities(buildUserAuthority(user.getUserRoles()));
-//        Authentication auth = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
-//        if (!StringUtils.isEmpty(password)) {
-//            auth = this.mAuthenticationManager.authenticate(auth);
-//        }
-//        if (auth.isAuthenticated()) {
-//            this.mTokenBasedRememberMeServices.setRememberMe(isRememberMe);
-//            this.mTokenBasedRememberMeServices.onLoginSuccess(httpServletRequest, httpServletResponse, auth);
-//            SecurityContextHolder.getContext().setAuthentication(auth);
-//            LOG.info("User success auth: " + auth.getPrincipal());
-//        } else {
-//            LOG.warn("User is not success auth: " + auth.getPrincipal());
-//        }
-//
-//
-//
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//        password = passwordEncoder.encodePassword(password, username);
-//        Authentication authentication =
-//                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-//        if(Strings.isNullOrEmpty(password)) {
-//            tokenBasedRememberMeServices.autoLogin()
-//        }
-//
-//        authenticationManager.authenticate(authentication);
-//        if (authentication.isAuthenticated()) {
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            LOG.debug(String.format("Auto login %s successfully!", username));
-//        }
-//
-//    }
 
 }

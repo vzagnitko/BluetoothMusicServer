@@ -20,6 +20,4 @@ public interface UserService {
 
     boolean isLoggedUser();
 
-//    void autologin(@NonNull String username, @NonNull String password, boolean isRememberMe);
-
 }

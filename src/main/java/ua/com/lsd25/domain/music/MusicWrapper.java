@@ -20,17 +20,21 @@ public class MusicWrapper implements Wrapper {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("is_favorite")
+    private boolean isFavorite;
+
     public MusicWrapper() {
 
     }
 
-    public MusicWrapper(long id, String name) {
+    public MusicWrapper(long id, String name, boolean isFavorite) {
         this.id = id;
         this.name = name;
+        this.isFavorite = isFavorite;
     }
 
     public MusicWrapper(Music music) {
-        this(music.getId(), music.getName());
+        this(music.getId(), music.getName(), music.isFavorite());
     }
 
     public long getId() {
@@ -47,6 +51,14 @@ public class MusicWrapper implements Wrapper {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
 }

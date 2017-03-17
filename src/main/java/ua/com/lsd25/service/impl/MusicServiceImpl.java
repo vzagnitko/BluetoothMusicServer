@@ -13,16 +13,18 @@ import ua.com.lsd25.domain.user.User;
 import ua.com.lsd25.repository.RepositoryException;
 import ua.com.lsd25.repository.music.MusicRepository;
 import ua.com.lsd25.service.ApplicationException;
+import ua.com.lsd25.service.FileService;
 import ua.com.lsd25.service.MusicService;
 import ua.com.lsd25.service.UserService;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * @author vzagnitko
  */
 @Service
-@CacheConfig(cacheNames = "/musics")
+@CacheConfig(cacheNames = "musics")
 public class MusicServiceImpl implements MusicService {
 
     private static final Logger LOG = Logger.getLogger(MusicServiceImpl.class);
@@ -32,6 +34,9 @@ public class MusicServiceImpl implements MusicService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     @Cacheable
@@ -76,12 +81,27 @@ public class MusicServiceImpl implements MusicService {
     @Transactional
     public long saveMusic(@NonNull String musicName, @NonNull byte[] musicBytes) throws ApplicationException {
         User loggedUser = userService.getLoggedUser();
-        Music music = new Music(musicName, loggedUser, musicBytes);
+        Music music = new Music(musicName, loggedUser);
         try {
-            return musicRepository.saveMusic(music);
+            long musicId = musicRepository.saveMusic(music);
+            if (musicId != 0) {
+                fileService.fastSaveFile(musicBytes, musicName);
+            }
+            return musicId;
         } catch (RepositoryException exc) {
             LOG.error(exc);
             throw new ApplicationException(exc, "Cannot save music: " + musicName);
+        }
+    }
+
+    @Override
+    public InputStream getMusicInputStream(@NonNull Long musicId) throws ApplicationException {
+        try {
+            Music music = findMusicById(musicId);
+            return fileService.fastReadFile(music.getName());
+        } catch (ApplicationException exc) {
+            LOG.error(exc);
+            throw new ApplicationException(exc, "Cannot get music input stream by musicId: " + musicId);
         }
     }
 

@@ -3,6 +3,7 @@ package ua.com.lsd25.service;
 import lombok.NonNull;
 import ua.com.lsd25.domain.music.Music;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -17,5 +18,7 @@ public interface MusicService {
     Music findMusicById(@NonNull Long id) throws ApplicationException;
 
     long saveMusic(@NonNull String musicName, @NonNull byte[] musicBytes) throws ApplicationException;
+
+    InputStream getMusicInputStream(@NonNull Long musicId) throws ApplicationException;
 
 }

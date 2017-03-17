@@ -1,8 +1,9 @@
-package ua.com.lsd25.controller.rest.user;
+package ua.com.lsd25.controller.rest.user.login;
 
 import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -83,7 +84,7 @@ public class UserLoginRestController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             LOG.debug(String.format("Auto login %s successfully!", username));
         }
-        return ResponseEntity.ok().body(new ServerResponse(200));
+        return ResponseEntity.ok().body(new ServerResponse(HttpStatus.OK.value()));
     }
 
 }

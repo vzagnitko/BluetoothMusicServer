@@ -4,10 +4,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.com.lsd25.controller.rest.user.register.UserRegisterRequest;
 import ua.com.lsd25.domain.DomainBuildWrapper;
 import ua.com.lsd25.domain.user.role.Role;
 
@@ -23,7 +25,7 @@ import java.util.Collection;
         @Index(name = "idx_user_username", columnList = "u_username", unique = true)
 })
 @EqualsAndHashCode
-@ToString
+@ToString(exclude = "password")
 public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
 
     @Id
@@ -31,26 +33,27 @@ public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty
-    @Length(min = 2, max = 50)
+    @NotBlank(message = "{userRegisterRequest.empty.firstName}")
+    @Length(min = 2, max = 50, message = "{userRegisterRequest.incorrect.firstname.length}")
     @Column(name = "u_first_name", nullable = false)
     private String firstName;
 
-    @NotEmpty
-    @Length(min = 2, max = 50)
+    @NotBlank(message = "{userRegisterRequest.empty.lastName}")
+    @Length(min = 2, max = 50, message = "{userRegisterRequest.incorrect.lastname.length}")
     @Column(name = "u_last_name", length = 50, nullable = false)
     private String lastName;
 
-    @NotEmpty
+    @Length(min = 8, max = 100, message = "{userRegisterRequest.incorrect.password.length}")
+    @NotEmpty(message = "{userRegisterRequest.empty.password}")
     @Column(name = "u_password", length = 100, nullable = false)
     private String password;
 
-    @Email
-    @Length(max = 50)
+    @Email(message = "{userRegisterRequest.incorrect.mail}")
+    @NotEmpty(message = "{userRegisterRequest.empty.mail}")
+    @Length(max = 50, message = "{userRegisterRequest.incorrect.mail.length}")
     @Column(name = "u_username", unique = true, length = 50, nullable = false)
     private String username;
 
-    @NotEmpty
     @Column(name = "u_register_date")
     private Timestamp registerDate;
 
@@ -84,6 +87,16 @@ public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
         this.password = password;
         this.username = username;
         this.role = role;
+        this.registerIp = registerIp;
+        this.registerDate = new Timestamp(System.currentTimeMillis());
+    }
+
+    public User(UserRegisterRequest userRegisterRequest, String registerIp) {
+        this.firstName = userRegisterRequest.getFirstName();
+        this.lastName = userRegisterRequest.getLastName();
+        this.password = userRegisterRequest.getPassword();
+        this.username = userRegisterRequest.getUsername();
+        this.role = Role.USER;
         this.registerIp = registerIp;
         this.registerDate = new Timestamp(System.currentTimeMillis());
     }

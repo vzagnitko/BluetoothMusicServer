@@ -7,7 +7,6 @@ import ua.com.lsd25.domain.DomainBuildWrapper;
 import ua.com.lsd25.domain.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author vzagnitko
@@ -29,22 +28,20 @@ public class Music implements DomainBuildWrapper<MusicWrapper> {
     @Column(name = "m_name", length = 100, nullable = false)
     private String name;
 
+    @Column(name = "m_is_favorite", nullable = false)
+    private boolean isFavorite = false;
+
     @JoinColumn(name = "m_user_id")
     @OneToOne(cascade = CascadeType.REMOVE)
     private User user;
-
-    @NotNull
-    @Column(name = "m_music")
-    private byte[] music;
 
     public Music() {
 
     }
 
-    public Music(String name, User user, byte[] music) {
+    public Music(String name, User user) {
         this.name = name;
         this.user = user;
-        this.music = music;
     }
 
     public String getName() {
@@ -53,14 +50,6 @@ public class Music implements DomainBuildWrapper<MusicWrapper> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public byte[] getMusic() {
-        return music;
-    }
-
-    public void setMusic(byte[] music) {
-        this.music = music;
     }
 
     public User getUser() {
@@ -77,6 +66,15 @@ public class Music implements DomainBuildWrapper<MusicWrapper> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     @Override

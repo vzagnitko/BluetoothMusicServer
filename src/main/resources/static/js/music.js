@@ -2,13 +2,11 @@
  * Created by vzagnitko on 11.03.17.
  */
 
-var link = '/rest/musics';
-
 function musics() {
 
     $.ajax({
         type: "GET",
-        url: link,
+        url: '/rest/musics',
         success: function (data) {
             console.log(data);
             var musicTable = $("#music-table");

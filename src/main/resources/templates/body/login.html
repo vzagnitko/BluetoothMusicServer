@@ -43,7 +43,22 @@
                     <div class="col-sm-12 controls">
                         <button id="btn-login" onclick="loginUser()" class="btn btn-success"
                                 th:text="#{login.button.login}"></button>
-                        <button id="btn-fblogin" class="btn btn-primary" th:text="#{login.button.facebook.login}"></button>
+
+
+                        <!--<div-->
+                                <!--class="fb-like"-->
+                                <!--data-share="true"-->
+                                <!--data-width="450"-->
+                                <!--data-show-faces="true">-->
+                        <!--</div>-->
+
+                        <form action="/connect/facebook" method="POST">
+                            <input type="hidden" name="scope" value="read_stream" />
+                            <div><p>You aren't connected to Facebook yet.</p></div>
+                            <p><button id="btn-fblogin" class="btn btn-primary" th:text="#{login.button.facebook.login}"></button></p>
+                        </form>
+
+
                         <!--<a id="btn-login" href="#" onclick="login()" class="btn btn-success">Login </a>-->
                         <!--<a id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</a>-->
 
