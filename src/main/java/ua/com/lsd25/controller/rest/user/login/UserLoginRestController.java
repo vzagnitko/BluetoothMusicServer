@@ -68,7 +68,8 @@ public class UserLoginRestController {
         }
         LOG.info("Login user: " + username);
         String password = request.getPassword();
-        boolean isRememberMe = request.getRememberMe();
+//        boolean isRememberMe = request.getRememberMe();
+        boolean isRememberMe = true;
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         password = passwordEncoder.encodePassword(password, username);

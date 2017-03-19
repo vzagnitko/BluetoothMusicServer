@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import ua.com.lsd25.service.ApplicationException;
 import ua.com.lsd25.service.FileService;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -33,7 +31,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Cacheable
-    public InputStream fastReadFile(@NonNull String fileName) throws ApplicationException {
+    public byte[] fastReadFile(@NonNull String fileName) throws ApplicationException {
         String filePath = StringUtils.join(path, fileName);
         if (Files.notExists(Paths.get(filePath))) {
             throw new IllegalStateException(String.format("File with name: %s not found in the server!", filePath));
@@ -45,7 +43,7 @@ public class FileServiceImpl implements FileService {
                 mbb = mbb.force();
                 byte[] buffer = new byte[(int) in.size()];
                 mbb.get(buffer);
-                return new ByteArrayInputStream(buffer);
+                return buffer;
             }
         } catch (Exception exc) {
             LOG.error(exc);

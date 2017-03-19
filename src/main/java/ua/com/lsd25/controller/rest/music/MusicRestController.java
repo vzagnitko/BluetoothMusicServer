@@ -1,10 +1,10 @@
 package ua.com.lsd25.controller.rest.music;
 
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +16,9 @@ import ua.com.lsd25.domain.music.MusicWrapper;
 import ua.com.lsd25.helper.WrapperHelper;
 import ua.com.lsd25.service.ApplicationException;
 import ua.com.lsd25.service.MusicService;
+import ua.com.lsd25.service.PlayMusicService;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -30,6 +30,12 @@ public class MusicRestController {
 
     @Autowired
     private MusicService musicService;
+
+    @Autowired
+    private PlayMusicService playMusicService;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     @RequestMapping(value = {"", "/", "*"}, method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -62,9 +68,32 @@ public class MusicRestController {
 //            throw new ValidationException(bindingResult.getAllErrors());
 //        }
 
-        InputStream is = musicService.getMusicInputStream(musicId);
-        Player playMP3 = new Player(is);
-        playMP3.play();
+        playMusicService.playMusic(musicId);
+
+        return ResponseEntity.ok().body(new ServerResponse<>(200));
+    }
+
+    @RequestMapping(value = "/suspend", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<ServerResponse<Void>> suspendController(@RequestParam Long musicId) throws ApplicationException {
+//        if (bindingResult.hasErrors()) {
+//            throw new ValidationException(bindingResult.getAllErrors());
+//        }
+
+//        playMusicService.suspendMusic(musicId);
+        jmsTemplate.convertAndSend("music-queue", musicId);
+
+        return ResponseEntity.ok().body(new ServerResponse<>(200));
+    }
+
+    @RequestMapping(value = "/resume", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<ServerResponse<Void>> resumeController(@RequestParam Long musicId) throws ApplicationException {
+//        if (bindingResult.hasErrors()) {
+//            throw new ValidationException(bindingResult.getAllErrors());
+//        }
+
+        playMusicService.resumeMusic(musicId);
 
         return ResponseEntity.ok().body(new ServerResponse<>(200));
     }

@@ -5,7 +5,8 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title" th:text="#{login.div.signin}"></div>
-                <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#" th:text="#{login.a.forgot.password}"></a>
+                <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"
+                                                                                           th:text="#{login.a.forgot.password}"></a>
                 </div>
             </div>
 
@@ -46,16 +47,19 @@
 
 
                         <!--<div-->
-                                <!--class="fb-like"-->
-                                <!--data-share="true"-->
-                                <!--data-width="450"-->
-                                <!--data-show-faces="true">-->
+                        <!--class="fb-like"-->
+                        <!--data-share="true"-->
+                        <!--data-width="450"-->
+                        <!--data-show-faces="true">-->
                         <!--</div>-->
 
                         <form action="/connect/facebook" method="POST">
-                            <input type="hidden" name="scope" value="read_stream" />
+                            <input type="hidden" name="scope" value="read_stream"/>
                             <div><p>You aren't connected to Facebook yet.</p></div>
-                            <p><button id="btn-fblogin" class="btn btn-primary" th:text="#{login.button.facebook.login}"></button></p>
+                            <p>
+                                <button id="btn-fblogin" class="btn btn-primary"
+                                        th:text="#{login.button.facebook.login}"></button>
+                            </p>
                         </form>
 
 
@@ -85,7 +89,9 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title" th:text="#{login.div.signup}"></div>
-                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" th:text="#{login.a.signin}" onclick="$('#signupbox').hide(); $('#loginbox').show()"></a>
+                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#"
+                                                                                           th:text="#{login.a.signin}"
+                                                                                           onclick="$('#signupbox').hide(); $('#loginbox').show()"></a>
                 </div>
             </div>
             <div class="panel-body">
@@ -106,21 +112,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname" class="col-md-3 control-label" th:text="#{login.label.for.firstname}"></label>
+                        <label for="firstname" class="col-md-3 control-label"
+                               th:text="#{login.label.for.firstname}"></label>
                         <div class="col-md-9">
                             <input id="reg-first-name" type="text" class="form-control" name="firstname"
                                    th:placeholder="#{login.input.placeholder.firstname}"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-md-3 control-label" th:text="#{login.label.for.lastname}"></label>
+                        <label for="lastname" class="col-md-3 control-label"
+                               th:text="#{login.label.for.lastname}"></label>
                         <div class="col-md-9">
                             <input id="reg-last-name" type="text" class="form-control" name="lastname"
                                    th:placeholder="#{login.input.placeholder.lastname}"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password" class="col-md-3 control-label" th:text="#{login.label.for.password}"></label>
+                        <label for="password" class="col-md-3 control-label"
+                               th:text="#{login.label.for.password}"></label>
                         <div class="col-md-9">
                             <input id="reg-password" type="password" class="form-control" name="passwd"
                                    th:placeholder="#{login.input.placeholder.password}"/>
@@ -142,12 +151,12 @@
 
                     <!--<div style="border-top: 1px solid #999; padding-top:20px" class="form-group">-->
 
-                        <!--<div class="col-md-offset-3 col-md-9">-->
-                            <!--<button id="btn-fbsignup" type="button" class="btn btn-primary"-->
-                                    <!--th:text="#{login.signup.facebook.button}">-->
-                                <!--<i class="icon-facebook"></i>-->
-                            <!--</button>-->
-                        <!--</div>-->
+                    <!--<div class="col-md-offset-3 col-md-9">-->
+                    <!--<button id="btn-fbsignup" type="button" class="btn btn-primary"-->
+                    <!--th:text="#{login.signup.facebook.button}">-->
+                    <!--<i class="icon-facebook"></i>-->
+                    <!--</button>-->
+                    <!--</div>-->
 
                     <!--</div>-->
 

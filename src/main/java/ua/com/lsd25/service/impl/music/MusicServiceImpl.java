@@ -1,4 +1,4 @@
-package ua.com.lsd25.service.impl;
+package ua.com.lsd25.service.impl.music;
 
 import lombok.NonNull;
 import org.apache.log4j.Logger;
@@ -17,7 +17,6 @@ import ua.com.lsd25.service.FileService;
 import ua.com.lsd25.service.MusicService;
 import ua.com.lsd25.service.UserService;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -95,7 +94,8 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public InputStream getMusicInputStream(@NonNull Long musicId) throws ApplicationException {
+    @Cacheable
+    public byte[] getMusicInputStream(@NonNull Long musicId) throws ApplicationException {
         try {
             Music music = findMusicById(musicId);
             return fileService.fastReadFile(music.getName());
