@@ -1,8 +1,7 @@
 package ua.com.lsd25.controller.rest.music;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -10,8 +9,7 @@ import java.io.Serializable;
 /**
  * @author vzagnitko
  */
-@EqualsAndHashCode
-@ToString
+@Data
 public class MusicRequest implements Serializable {
 
     @JsonProperty("music_id")
@@ -20,14 +18,6 @@ public class MusicRequest implements Serializable {
 
     public MusicRequest() {
 
-    }
-
-    public Long getMusicId() {
-        return musicId;
-    }
-
-    public void setMusicId(Long musicId) {
-        this.musicId = musicId;
     }
 
 }

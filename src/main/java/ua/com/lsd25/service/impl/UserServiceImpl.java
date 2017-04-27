@@ -11,6 +11,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.lsd25.controller.handler.login.UserAlreadyLoggedException;
 import ua.com.lsd25.domain.user.User;
@@ -32,73 +33,82 @@ public class UserServiceImpl implements UserService {
 
     private static final String ROLE_ANONYMOUS = "anonymousUser";
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final UserRoleRepository userRoleRepository;
+
+    private final Md5PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRoleRepository userRoleRepository;
-
-    @Autowired
-    private Md5PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository,
+                           UserRoleRepository userRoleRepository,
+                           Md5PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     @Cacheable
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User findUserById(@NonNull Long id) throws ApplicationException {
         try {
             return userRepository.findUserById(id);
         } catch (RepositoryException exc) {
             LOG.error(exc);
-            throw new ApplicationException(exc, "Cannot retrieve user by id: " + id);
+            throw new ApplicationException(exc, String.format("Cannot retrieve user by id: %d", id));
         }
     }
 
     @Override
     @Cacheable
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User findUserByUsername(@NonNull String username) throws ApplicationException {
         try {
             return userRepository.findUserByUsername(username);
         } catch (RepositoryException exc) {
             LOG.error(exc);
-            throw new ApplicationException(exc, "Cannot retrieve user by username: " + username);
+            throw new ApplicationException(exc, String.format("Cannot retrieve user by username: %s", username));
         }
     }
 
     @Override
     @Cacheable
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public boolean isExistsUser(@NonNull String username) throws ApplicationException {
         try {
             return userRepository.isExists(username);
         } catch (RepositoryException exc) {
             LOG.error(exc);
-            throw new ApplicationException(exc, "Cannot retrieve user by username: " + username);
+            throw new ApplicationException(exc, String.format("Cannot retrieve user by username: %s", username));
         }
     }
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = ApplicationException.class)
     public long saveUser(@NonNull User user) throws ApplicationException {
         try {
             if (isExistsUser(user.getUsername())) {
-                throw new UserAlreadyLoggedException("User with username: " + user.getUsername() + " already registered");
+                throw new UserAlreadyLoggedException(String.format("User with username: %s already registered", user.getUsername()));
             }
-            @NonNull
             Role role = user.getRole();
             user.setPassword(passwordEncoder.encodePassword(user.getPassword(), user.getUsername()));
             userRoleRepository.saveUserRole(role);
             return userRepository.saveUser(user);
         } catch (RepositoryException exc) {
             LOG.error(exc);
-            throw new ApplicationException(exc, "Cannot save user: " + user);
+            throw new ApplicationException(exc, String.format("Cannot save user: %s", user));
         }
     }
 
     @Override
+    @Cacheable
     public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new AccessDeniedException("User is not logged");
+        }
         Object principal = authentication.getPrincipal();
         if (principal == null || principal.equals(ROLE_ANONYMOUS)) {
             throw new AccessDeniedException("User is not logged");

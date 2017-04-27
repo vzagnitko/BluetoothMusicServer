@@ -37,20 +37,28 @@ public class UserLoginRestController {
 
     private static final Logger LOG = Logger.getLogger(UserLoginRestController.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final UserDetailsService userDetailsService;
+
+    private final Md5PasswordEncoder passwordEncoder;
+
+    private final TokenBasedRememberMeServices tokenBasedRememberMeServices;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private Md5PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TokenBasedRememberMeServices tokenBasedRememberMeServices;
+    public UserLoginRestController(UserService userService,
+                                   AuthenticationManager authenticationManager,
+                                   UserDetailsService userDetailsService,
+                                   Md5PasswordEncoder passwordEncoder,
+                                   TokenBasedRememberMeServices tokenBasedRememberMeServices) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenBasedRememberMeServices = tokenBasedRememberMeServices;
+    }
 
     @RequestMapping(value = {"", "/", "*"}, method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

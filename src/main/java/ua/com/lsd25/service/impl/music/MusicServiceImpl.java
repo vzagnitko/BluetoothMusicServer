@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.lsd25.domain.music.Music;
 import ua.com.lsd25.domain.user.User;
@@ -28,22 +29,29 @@ public class MusicServiceImpl implements MusicService {
 
     private static final Logger LOG = Logger.getLogger(MusicServiceImpl.class);
 
-    @Autowired
-    private MusicRepository musicRepository;
+    private final MusicRepository musicRepository;
+
+    private final UserService userService;
+
+    private final FileService fileService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private FileService fileService;
+    public MusicServiceImpl(MusicRepository musicRepository,
+                            UserService userService,
+                            FileService fileService) {
+        this.musicRepository = musicRepository;
+        this.userService = userService;
+        this.fileService = fileService;
+    }
 
     @Override
     @Cacheable
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<Music> findMusics() throws ApplicationException {
         User loggedUser = userService.getLoggedUser();
         long userId = loggedUser.getId();
         try {
+            LOG.info(String.format("Find music by user id: %d", userId));
             return musicRepository.findAllMusicsByUserId(userId);
         } catch (RepositoryException exc) {
             LOG.error(exc);
@@ -53,9 +61,10 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     @Cacheable
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Music findMusicByName(@NonNull String name) throws ApplicationException {
         try {
+            LOG.info(String.format("Find music by name: %s", name));
             return musicRepository.findMusicByName(name);
         } catch (RepositoryException exc) {
             LOG.error(exc);
@@ -65,9 +74,10 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     @Cacheable
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Music findMusicById(@NonNull Long id) throws ApplicationException {
         try {
+            LOG.info(String.format("Find music by id: %d", id));
             return musicRepository.findMusicById(id);
         } catch (RepositoryException exc) {
             LOG.error(exc);
@@ -76,11 +86,16 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     @Transactional
     public long saveMusic(@NonNull String musicName, @NonNull byte[] musicBytes) throws ApplicationException {
+        LOG.info(String.format("Save music, name: %s", musicName));
         User loggedUser = userService.getLoggedUser();
-        Music music = new Music(musicName, loggedUser);
+        Music music = Music
+                .builder()
+                .name(musicName)
+                .user(loggedUser)
+                .build();
         try {
             long musicId = musicRepository.saveMusic(music);
             if (musicId != 0) {
@@ -95,8 +110,9 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     @Cacheable
-    public byte[] getMusicInputStream(@NonNull Long musicId) throws ApplicationException {
+    public byte[] getMusicBytes(@NonNull Long musicId) throws ApplicationException {
         try {
+            LOG.info(String.format("Get music, music id: %d", musicId));
             Music music = findMusicById(musicId);
             return fileService.fastReadFile(music.getName());
         } catch (ApplicationException exc) {

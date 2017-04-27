@@ -1,8 +1,7 @@
 package ua.com.lsd25.controller.rest.user.register;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -13,8 +12,7 @@ import java.io.Serializable;
 /**
  * @author vzagnitko
  */
-@EqualsAndHashCode
-@ToString
+@Data
 public class UserRegisterRequest implements Serializable {
 
     @NotBlank(message = "{userRegisterRequest.empty.firstName}")
@@ -40,38 +38,6 @@ public class UserRegisterRequest implements Serializable {
 
     public UserRegisterRequest() {
 
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 }

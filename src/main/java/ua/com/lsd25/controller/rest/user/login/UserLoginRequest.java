@@ -1,8 +1,7 @@
 package ua.com.lsd25.controller.rest.user.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -12,8 +11,7 @@ import java.io.Serializable;
 /**
  * @author vzagnitko
  */
-@EqualsAndHashCode
-@ToString
+@Data
 public class UserLoginRequest implements Serializable {
 
     @Email(message = "{userLoginRequest.incorrect.mail}")
@@ -32,30 +30,6 @@ public class UserLoginRequest implements Serializable {
 
     public UserLoginRequest() {
 
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean getRememberMe() {
-        return isRememberMe;
-    }
-
-    public void setRememberMe(boolean rememberMe) {
-        isRememberMe = rememberMe;
     }
 
 }

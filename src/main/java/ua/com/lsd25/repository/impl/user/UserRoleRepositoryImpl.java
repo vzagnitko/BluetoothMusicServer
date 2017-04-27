@@ -16,8 +16,12 @@ public class UserRoleRepositoryImpl implements UserRoleRepository {
 
     private static final Logger LOG = Logger.getLogger(UserRoleRepositoryImpl.class);
 
+    private final UserRoleQuery userRoleQuery;
+
     @Autowired
-    private UserRoleQuery userRoleQuery;
+    public UserRoleRepositoryImpl(UserRoleQuery userRoleQuery) {
+        this.userRoleQuery = userRoleQuery;
+    }
 
     @Override
     public long saveUserRole(Role role) throws RepositoryException {

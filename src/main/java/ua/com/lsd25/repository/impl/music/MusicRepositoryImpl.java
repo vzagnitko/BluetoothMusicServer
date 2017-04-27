@@ -18,15 +18,19 @@ public class MusicRepositoryImpl implements MusicRepository {
 
     private static final Logger LOG = Logger.getLogger(MusicRepositoryImpl.class);
 
+    private final MusicQuery musicQuery;
+
     @Autowired
-    private MusicQuery musicQuery;
+    public MusicRepositoryImpl(MusicQuery musicQuery) {
+        this.musicQuery = musicQuery;
+    }
 
     @Override
     public List<Music> findAllMusicsByUserId(long userId) throws RepositoryException {
         try {
             return musicQuery.findMusicsByUserId(userId);
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot find music by user id: " + userId);
+            throw new RepositoryException(exc, String.format("Cannot find music by user id: %d", userId));
         }
     }
 
@@ -35,7 +39,7 @@ public class MusicRepositoryImpl implements MusicRepository {
         try {
             return musicQuery.findMusicByName(name);
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot find music by name: " + name);
+            throw new RepositoryException(exc, String.format("Cannot find music by name: %s", name));
         }
     }
 
@@ -44,7 +48,7 @@ public class MusicRepositoryImpl implements MusicRepository {
         try {
             return musicQuery.findOne(id);
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot find music by id: " + id);
+            throw new RepositoryException(exc, String.format("Cannot find music by id: %d", id));
         }
     }
 
@@ -53,7 +57,7 @@ public class MusicRepositoryImpl implements MusicRepository {
         try {
             return musicQuery.save(music).getId();
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot save music: " + music);
+            throw new RepositoryException(exc, String.format("Cannot save music: %s", music));
         }
     }
 

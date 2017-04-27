@@ -7,18 +7,17 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ua.com.lsd25.controller.rest.ServerResponse;
 
 /**
  * @author vzagnitko
  */
-@RestController
-@ControllerAdvice
+@RestControllerAdvice
 public class LoginHandlingController {
 
     private static final Logger LOG = Logger.getLogger(LoginHandlingController.class);
@@ -31,25 +30,25 @@ public class LoginHandlingController {
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ServerResponse> badCredentials(BadCredentialsException exc) {
+    public ResponseEntity<ServerResponse> badCredentialsHandler(BadCredentialsException exc) {
         LOG.error(exc);
-        int status = HttpStatus.FORBIDDEN.value();
+        int status = HttpStatus.UNAUTHORIZED.value();
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(DisabledException.class)
-    public ResponseEntity<ServerResponse> badCredentials(DisabledException exc) {
+    public ResponseEntity<ServerResponse> userDisabledHandler(DisabledException exc) {
         LOG.error(exc);
-        int status = HttpStatus.FORBIDDEN.value();
+        int status = HttpStatus.UNAUTHORIZED.value();
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserAlreadyLoggedException.class)
-    public ResponseEntity<ServerResponse> userAlreadyLogged(UserAlreadyLoggedException exc) {
+    public ResponseEntity<ServerResponse> userAlreadyLoggedHandler(UserAlreadyLoggedException exc) {
         LOG.error(exc);
         int status = HttpStatus.CONFLICT.value();
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
@@ -57,7 +56,7 @@ public class LoginHandlingController {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ServerResponse> userAlreadyLogged(HttpMessageNotReadableException exc) {
+    public ResponseEntity<ServerResponse> cannotLoginHandler(HttpMessageNotReadableException exc) {
         LOG.error(exc);
         int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
@@ -65,9 +64,17 @@ public class LoginHandlingController {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ServerResponse> userAlreadyLogged(AccessDeniedException exc) {
+    public ResponseEntity<ServerResponse> userAccessDeniedHandler(AccessDeniedException exc) {
         LOG.error(exc);
         int status = HttpStatus.FORBIDDEN.value();
+        return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<ServerResponse> userLockedHandler(LockedException exc) {
+        LOG.error(exc);
+        int status = HttpStatus.UNAUTHORIZED.value();
         return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
     }
 

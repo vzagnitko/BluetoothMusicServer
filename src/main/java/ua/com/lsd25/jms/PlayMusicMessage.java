@@ -7,6 +7,10 @@ import ua.com.lsd25.service.ApplicationException;
  */
 public interface PlayMusicMessage {
 
-    void sendMessageToPlayMusic(long music) throws ApplicationException;
+    void sendMessageToPlayMusic(long musicId) throws ApplicationException;
+
+    void sendMessageToStopMusic(long musicId) throws ApplicationException;
+
+    void sendMessageToSuspendMusic(long musicId) throws ApplicationException;
 
 }

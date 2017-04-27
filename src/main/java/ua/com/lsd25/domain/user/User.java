@@ -1,7 +1,6 @@
 package ua.com.lsd25.domain.user;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -9,11 +8,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import ua.com.lsd25.controller.rest.user.register.UserRegisterRequest;
-import ua.com.lsd25.domain.DomainBuildWrapper;
 import ua.com.lsd25.domain.user.role.Role;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -24,9 +22,12 @@ import java.util.Collection;
 @Table(name = "user", schema = "public", indexes = {
         @Index(name = "idx_user_username", columnList = "u_username", unique = true)
 })
-@EqualsAndHashCode
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = "password")
-public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
+public class User implements UserDetails, Serializable {
 
     @Id
     @Column(name = "u_id")
@@ -77,29 +78,29 @@ public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
     @Column(name = "u_is_credentials_non_expired")
     private boolean isCredentialsNonExpired = true;
 
-    public User() {
+//    public User() {
+//
+//    }
 
-    }
-
-    public User(String firstName, String lastName, String password, String username, Role role, String registerIp) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.username = username;
-        this.role = role;
-        this.registerIp = registerIp;
-        this.registerDate = new Timestamp(System.currentTimeMillis());
-    }
-
-    public User(UserRegisterRequest userRegisterRequest, String registerIp) {
-        this.firstName = userRegisterRequest.getFirstName();
-        this.lastName = userRegisterRequest.getLastName();
-        this.password = userRegisterRequest.getPassword();
-        this.username = userRegisterRequest.getUsername();
-        this.role = Role.USER;
-        this.registerIp = registerIp;
-        this.registerDate = new Timestamp(System.currentTimeMillis());
-    }
+//    public User(String firstName, String lastName, String password, String username, Role role, String registerIp) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.password = password;
+//        this.username = username;
+//        this.role = role;
+//        this.registerIp = registerIp;
+//        this.registerDate = new Timestamp(System.currentTimeMillis());
+//    }
+//
+//    public User(UserRegisterRequest userRegisterRequest, String registerIp) {
+//        this.firstName = userRegisterRequest.getFirstName();
+//        this.lastName = userRegisterRequest.getLastName();
+//        this.password = userRegisterRequest.getPassword();
+//        this.username = userRegisterRequest.getUsername();
+//        this.role = Role.USER;
+//        this.registerIp = registerIp;
+//        this.registerDate = new Timestamp(System.currentTimeMillis());
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -111,9 +112,9 @@ public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 
     @Override
     public String getUsername() {
@@ -125,9 +126,9 @@ public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
         return isAccountNonExpired;
     }
 
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        isAccountNonExpired = accountNonExpired;
-    }
+//    public void setAccountNonExpired(boolean accountNonExpired) {
+//        isAccountNonExpired = accountNonExpired;
+//    }
 
     @Override
     public boolean isAccountNonLocked() {
@@ -139,74 +140,69 @@ public class User implements UserDetails, DomainBuildWrapper<UserWrapper> {
         return isCredentialsNonExpired;
     }
 
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        isCredentialsNonExpired = credentialsNonExpired;
-    }
+//    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+//        isCredentialsNonExpired = credentialsNonExpired;
+//    }
 
     @Override
     public boolean isEnabled() {
         return isEnabled;
     }
 
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Timestamp getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(Timestamp registerDate) {
-        this.registerDate = registerDate;
-    }
-
-    public String getRegisterIp() {
-        return registerIp;
-    }
-
-    public void setRegisterIp(String registerIp) {
-        this.registerIp = registerIp;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public void setAccountNonBlocked(boolean accountNonBlocked) {
-        isAccountNonBlocked = accountNonBlocked;
-    }
-
-    @Override
-    public UserWrapper buildWrapper() {
-        return new UserWrapper(this);
-    }
+//    public void setEnabled(boolean enabled) {
+//        isEnabled = enabled;
+//    }
+//
+//    public long getId() {
+//        return id;
+//    }
+//
+//    public void setId(long id) {
+//        this.id = id;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public Timestamp getRegisterDate() {
+//        return registerDate;
+//    }
+//
+//    public void setRegisterDate(Timestamp registerDate) {
+//        this.registerDate = registerDate;
+//    }
+//
+//    public String getRegisterIp() {
+//        return registerIp;
+//    }
+//
+//    public void setRegisterIp(String registerIp) {
+//        this.registerIp = registerIp;
+//    }
+//
+//    public Role getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(Role role) {
+//        this.role = role;
+//    }
+//
+//    public void setAccountNonBlocked(boolean accountNonBlocked) {
+//        isAccountNonBlocked = accountNonBlocked;
+//    }
 
 }

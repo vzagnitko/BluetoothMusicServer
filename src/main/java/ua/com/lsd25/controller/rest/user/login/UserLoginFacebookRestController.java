@@ -20,16 +20,16 @@ import ua.com.lsd25.controller.rest.ServerResponse;
 @RequestMapping("/rest/login/facebooks")
 public class UserLoginFacebookRestController {
 
-    @Autowired
-    private Facebook facebook;
+    private final Facebook facebook;
+
+    private final ConnectionRepository connectionRepository;
 
     @Autowired
-    private ConnectionRepository connectionRepository;
-
-    /*public UserLoginFacebookRestController(Facebook facebook, ConnectionRepository connectionRepository) {
+    public UserLoginFacebookRestController(Facebook facebook,
+                                           ConnectionRepository connectionRepository) {
         this.facebook = facebook;
         this.connectionRepository = connectionRepository;
-    }*/
+    }
 
     @RequestMapping(value = {"", "/", "*"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ServerResponse> helloFacebook() {

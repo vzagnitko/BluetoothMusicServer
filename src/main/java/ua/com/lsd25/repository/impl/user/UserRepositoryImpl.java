@@ -17,15 +17,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static final Logger LOG = Logger.getLogger(UserRepositoryImpl.class);
 
+    private final UserQuery userQuery;
+
     @Autowired
-    private UserQuery userQuery;
+    public UserRepositoryImpl(UserQuery userQuery) {
+        this.userQuery = userQuery;
+    }
 
     @Override
     public User findUserById(long id) throws RepositoryException {
         try {
             return userQuery.findOne(id);
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot find user by id: " + id);
+            throw new RepositoryException(exc, String.format("Cannot find user by id: %d", id));
         }
     }
 
@@ -34,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return userQuery.findUserByUsername(username);
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot find user by username: " + username);
+            throw new RepositoryException(exc, String.format("Cannot find user by username: %s", username));
         }
     }
 
@@ -43,17 +47,16 @@ public class UserRepositoryImpl implements UserRepository {
         try {
             return userQuery.save(user).getId();
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot save user: " + user);
+            throw new RepositoryException(exc, String.format("Cannot save user: %s", user));
         }
     }
 
     @Override
     public boolean isExists(@NonNull String username) throws RepositoryException {
         try {
-            Long id = userQuery.isExistsUser(username);
-            return id != null && id != 0;
+            return userQuery.isExistsUser(username) != null;
         } catch (Exception exc) {
-            throw new RepositoryException(exc, "Cannot find user by username: " + username);
+            throw new RepositoryException(exc, String.format("Cannot find user by username: %s", username));
         }
     }
 

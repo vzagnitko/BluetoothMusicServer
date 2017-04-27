@@ -21,7 +21,7 @@ import java.nio.file.Paths;
  * @author vzagnitko
  */
 @Service
-@CacheConfig(cacheNames = "musics_bytes")
+@CacheConfig(cacheNames = "music_contents")
 public class FileServiceImpl implements FileService {
 
     private static final Logger LOG = Logger.getLogger(FileServiceImpl.class);
@@ -33,6 +33,7 @@ public class FileServiceImpl implements FileService {
     @Cacheable
     public byte[] fastReadFile(@NonNull String fileName) throws ApplicationException {
         String filePath = StringUtils.join(path, fileName);
+        LOG.info(String.format("Read music: %s, path: %s", fileName, filePath));
         if (Files.notExists(Paths.get(filePath))) {
             throw new IllegalStateException(String.format("File with name: %s not found in the server!", filePath));
         }
@@ -52,9 +53,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    @CacheEvict
+    @CacheEvict(allEntries = true)
     public void fastSaveFile(@NonNull byte[] buffer, @NonNull String fileName) throws ApplicationException {
         String filePath = StringUtils.join(path, fileName);
+        LOG.info(String.format("Write music: %s, path: %s", fileName, filePath));
         try (FileChannel rwChannel = new RandomAccessFile(filePath, "rw").getChannel()) {
             rwChannel.force(true);
             rwChannel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length).put(buffer);

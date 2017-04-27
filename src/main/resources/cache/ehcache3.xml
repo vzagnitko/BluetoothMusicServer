@@ -19,7 +19,7 @@
         <jsr107:mbeans enable-statistics="true"/>
     </cache>
 
-    <cache alias="musics_bytes">
+    <cache alias="music_contents">
         <expiry>
             <ttl unit="seconds">600</ttl>
         </expiry>

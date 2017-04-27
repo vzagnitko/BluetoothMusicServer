@@ -16,14 +16,32 @@ public class PlayMusicMessageImpl implements PlayMusicMessage {
 
     private static final Logger LOG = Logger.getLogger(PlayMusicMessageImpl.class);
 
+    private final WifiTransferService wifiTransferService;
+
     @Autowired
-    private WifiTransferService wifiTransferService;
+    public PlayMusicMessageImpl(WifiTransferService wifiTransferService) {
+        this.wifiTransferService = wifiTransferService;
+    }
 
     @Override
-    @JmsListener(destination = "music-queue")
+    @JmsListener(destination = "play-music")
     public void sendMessageToPlayMusic(long musicId) throws ApplicationException {
-        LOG.info("Play music by music id: " + musicId);
+        LOG.info(String.format("Play music id: %d", musicId));
         wifiTransferService.sendMusicStream(musicId);
+    }
+
+    @Override
+    @JmsListener(destination = "stop-music")
+    public void sendMessageToStopMusic(long musicId) throws ApplicationException {
+        LOG.info(String.format("Stop music id: %d", musicId));
+        wifiTransferService.sendStopMusic(musicId);
+    }
+
+    @Override
+    @JmsListener(destination = "resume-music")
+    public void sendMessageToSuspendMusic(long musicId) throws ApplicationException {
+        LOG.info(String.format("Resume music id: %d", musicId));
+        wifiTransferService.sendResumeMusic(musicId);
     }
 
 }

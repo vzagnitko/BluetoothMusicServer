@@ -18,22 +18,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final Logger LOG = Logger.getLogger(UserDetailsServiceImpl.class);
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOG.info("Login user: " + username);
+        LOG.info(String.format("Login user: %s", username));
         try {
             User user = userService.findUserByUsername(username);
             if (user == null) {
-                throw new ApplicationException("User with username: " + username + " not found");
+                throw new ApplicationException(String.format("User with username: %s not found", username));
             }
             user.setEnabled(true);
             return user;
 
         } catch (ApplicationException exc) {
-            LOG.error("Username not found: " + username, exc);
+            LOG.error(String.format("Username not found: %s", username), exc);
             throw new UsernameNotFoundException(exc.getLocalizedMessage(), exc);
         }
     }

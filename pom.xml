@@ -30,7 +30,8 @@
         <nekohtml-version>1.9.22</nekohtml-version>
         <jlayer-version>1.0.1.4</jlayer-version>
         <commons-lang3-version>3.5</commons-lang3-version>
-        <!--<bluecove-version>2.1.2</bluecove-version>-->
+        <joda-time-version>2.9.9</joda-time-version>
+        <joda-time-hibernate>1.4</joda-time-hibernate>
     </properties>
 
     <dependencies>
@@ -69,10 +70,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.social</groupId>

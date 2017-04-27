@@ -13,6 +13,7 @@ OIDS = FALSE
 
 ALTER TABLE public.user_role
   OWNER TO postgres;
+--rollback TABLE public.user_role;
 
 --changeset vzagnitko:2
 CREATE TABLE public.user
@@ -42,6 +43,7 @@ CREATE UNIQUE INDEX idx_user_username
   ON public.user (u_username);
 CREATE INDEX idx_u_user_role
   ON public.user (u_user_role);
+--rollback TABLE TABLE public.user;
 
 --changeset vzagnitko:3
 CREATE TABLE public.music
@@ -63,3 +65,4 @@ CREATE INDEX idx_music_name
   ON public.music (m_name);
 CREATE INDEX idx_m_user_id
   ON public.music (m_user_id);
+--rollback TABLE TABLE public.music;

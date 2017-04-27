@@ -15,11 +15,8 @@ import javax.jms.ConnectionFactory;
 @EnableJms
 public class MessagingListnerConfiguration {
 
-    @Autowired
-    private ConnectionFactory connectionFactory;
-
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(@Autowired ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setConcurrency("1-1");
