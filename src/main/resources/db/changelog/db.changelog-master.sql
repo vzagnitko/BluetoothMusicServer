@@ -27,7 +27,7 @@ CREATE TABLE public.user
   u_register_ip                TEXT         NOT NULL,
   u_is_enabled                 BOOLEAN      NOT NULL DEFAULT FALSE,
   u_is_account_non_expired     BOOLEAN      NOT NULL DEFAULT TRUE,
-  u_is_account_non_blocked     BOOLEAN      NOT NULL DEFAULT TRUE,
+  u_is_account_non_locked      BOOLEAN      NOT NULL DEFAULT TRUE,
   u_is_credentials_non_expired BOOLEAN      NOT NULL DEFAULT TRUE,
   u_user_role                  SERIAL REFERENCES public.user_role (ur_id) ON DELETE CASCADE,
   PRIMARY KEY (u_id)

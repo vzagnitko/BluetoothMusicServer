@@ -110,14 +110,13 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     @Cacheable
-    public byte[] getMusicBytes(@NonNull Long musicId) throws ApplicationException {
+    public byte[] getMusicBytes(@NonNull String musicName) throws ApplicationException {
         try {
-            LOG.info(String.format("Get music, music id: %d", musicId));
-            Music music = findMusicById(musicId);
-            return fileService.fastReadFile(music.getName());
+            LOG.info(String.format("Get music, music name: %s", musicName));
+            return fileService.fastReadFile(musicName);
         } catch (ApplicationException exc) {
             LOG.error(exc);
-            throw new ApplicationException(exc, "Cannot get music input stream by musicId: " + musicId);
+            throw new ApplicationException(exc, "Cannot get music input stream by music name: " + musicName);
         }
     }
 

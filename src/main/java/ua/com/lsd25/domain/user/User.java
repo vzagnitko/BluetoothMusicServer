@@ -70,13 +70,13 @@ public class User implements UserDetails, Serializable {
     private boolean isEnabled;
 
     @Column(name = "u_is_account_non_expired")
-    private boolean isAccountNonExpired = true;
+    private boolean isAccountNonExpired;
 
-    @Column(name = "u_is_account_non_blocked")
-    private boolean isAccountNonBlocked = true;
+    @Column(name = "u_is_account_non_locked")
+    private boolean isAccountNonLocked;
 
     @Column(name = "u_is_credentials_non_expired")
-    private boolean isCredentialsNonExpired = true;
+    private boolean isCredentialsNonExpired;
 
 //    public User() {
 //
@@ -107,47 +107,47 @@ public class User implements UserDetails, Serializable {
         return AuthorityUtils.createAuthorityList(getRole().getAuthority());
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+//    @Override
+//    public String getPassword() {
+//        return password;
+//    }
 
 //    public void setPassword(String password) {
 //        this.password = password;
 //    }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+//    @Override
+//    public String getUsername() {
+//        return username;
+//    }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
-    }
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return isAccountNonExpired;
+//    }
 
 //    public void setAccountNonExpired(boolean accountNonExpired) {
 //        isAccountNonExpired = accountNonExpired;
 //    }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return isAccountNonBlocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
-    }
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return isAccountNonLocked;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return isCredentialsNonExpired;
+//    }
 
 //    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
 //        isCredentialsNonExpired = credentialsNonExpired;
 //    }
 
-    @Override
-    public boolean isEnabled() {
-        return isEnabled;
-    }
+//    @Override
+//    public boolean isEnabled() {
+//        return isEnabled;
+//    }
 
 //    public void setEnabled(boolean enabled) {
 //        isEnabled = enabled;

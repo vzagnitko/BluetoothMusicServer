@@ -8,4 +8,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Registration problem")
 public class UserAlreadyRegisterException extends RuntimeException {
+
+    private String message;
+
+    public UserAlreadyRegisterException(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
 }

@@ -21,7 +21,7 @@ public class UserRegisterAlreadyRegisterHandlingController {
     public ResponseEntity<ServerResponse> validationHandler(UserAlreadyRegisterException exc) {
         LOG.error(exc);
         int status = HttpStatus.CONFLICT.value();
-        return ResponseEntity.status(status).body(new ServerResponse(status));
+        return ResponseEntity.status(status).body(new ServerResponse(exc.getLocalizedMessage(), status));
     }
 
 }

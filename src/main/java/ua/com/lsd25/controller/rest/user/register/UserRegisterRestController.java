@@ -54,6 +54,9 @@ public class UserRegisterRestController {
                 .registerIp(registerIp)
                 .registerDate(new Timestamp(System.currentTimeMillis()))
                 .isEnabled(true)
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
                 .role(Role
                         .builder()
                         .userRole(Role.UserRole.USER)

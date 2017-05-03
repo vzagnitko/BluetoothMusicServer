@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.lsd25.controller.handler.login.UserAlreadyLoggedException;
+import ua.com.lsd25.controller.handler.register.UserAlreadyRegisterException;
 import ua.com.lsd25.domain.user.User;
 import ua.com.lsd25.domain.user.role.Role;
 import ua.com.lsd25.repository.RepositoryException;
@@ -88,10 +88,10 @@ public class UserServiceImpl implements UserService {
     @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = ApplicationException.class)
     public long saveUser(@NonNull User user) throws ApplicationException {
+        if (isExistsUser(user.getUsername())) {
+            throw new UserAlreadyRegisterException(String.format("User with username: %s already registered", user.getUsername()));
+        }
         try {
-            if (isExistsUser(user.getUsername())) {
-                throw new UserAlreadyLoggedException(String.format("User with username: %s already registered", user.getUsername()));
-            }
             Role role = user.getRole();
             user.setPassword(passwordEncoder.encodePassword(user.getPassword(), user.getUsername()));
             userRoleRepository.saveUserRole(role);

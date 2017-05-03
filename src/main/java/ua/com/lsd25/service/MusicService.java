@@ -18,6 +18,6 @@ public interface MusicService {
 
     long saveMusic(@NonNull String musicName, @NonNull byte[] musicBytes) throws ApplicationException;
 
-    byte[] getMusicBytes(@NonNull Long musicId) throws ApplicationException;
+    byte[] getMusicBytes(@NonNull String musicName) throws ApplicationException;
 
 }
